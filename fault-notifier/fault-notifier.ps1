@@ -41,33 +41,26 @@ function global:Toast {
 }
 
 
-
-
-# 全員で外部APIのstatusAPIをたたきまくるのはマズいので
-# 内部サーバーが代表して取得し、その結果を全員が取得する。
+$url_status = "https://sakura01.prosper2.org/status/status.json";
+$status = invoke-restmethod -uri $url_status -method get ;
 
 # Slack Status
-$url_status_slack = "https://status.slack.com/api/v2.0.0/current";
-$status_slack = invoke-restmethod -uri $url_status_slack -method get;
-
-if( $status_slack.status -ne 'ok' ){
-  $service = "slack";
-  $title = $service + "障害検知";
-  $msg  = $service + "で障害が検知されました`n";
-  $msg += "対応を開始してください";
+if( $status.slack -eq 'True' ){
+  $service = "Slack";
+  $title = $service + " Outage Report";
+  $msg  = "There is an outage in "+$service ;
+  $msg += "Start the migration process.";
   $url = "http://www.google.co.jp/";
   Toast -title $title -msg $msg -url $url;
 }
 
 
 # Azure DevOps Status
-$url_status_ado = "https://status.dev.azure.com/_apis/status/health";
-$status_ado = invoke-restmethod -uri $url_status_ado -method get;
-
-if( $status_ado.status.health -ne 'healthy' ){
+if( $status.AzureDevOps -eq 'True' ){
   $service = "Azure DevOps";
-  $title = $service + "障害検知";
-  $msg  = $service + "で障害が検知されました`n";
+  $title = $service + " Outage Report";
+  $msg  = "There is an outage in "+$service ;
   Toast -title $title -msg $msg ;
 }
+
 

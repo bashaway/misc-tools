@@ -10,17 +10,17 @@ url = "https://status.slack.com/api/v2.0.0/current"
 res = requests.get(url)
 data = json.loads(res.text)
 if data['status'] == 'ok':
-  status.update({'slack': True})
+  status.update({'slack': 'True'})
 else:
-  status.update({'slack': False})
+  status.update({'slack': 'False'})
 
 url = "https://status.dev.azure.com/_apis/status/health";
 res = requests.get(url)
 data = json.loads(res.text)
 if data['status']['health'] == 'healthy':
-  status.update({'AzureDevOps': True})
+  status.update({'AzureDevOps': 'True'})
 else:
-  status.update({'AzureDevOps': False})
+  status.update({'AzureDevOps': 'False'})
 
 print(status)
 
