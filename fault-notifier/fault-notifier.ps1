@@ -28,7 +28,7 @@ function global:Toast {
 "@;
 
     if( $url ){
-      $template += "<actions> <action content=`"Webページを開く`" arguments=`"$($url)`" activationType=`"protocol`"/> </actions> ";
+      $template += "<actions> <action content=`"Webﾆ馳ﾂーﾆ淡窶堙ｰﾅJ窶堋ｭ`" arguments=`"$($url)`" activationType=`"protocol`"/> </actions> ";
     }
 
 
@@ -45,7 +45,7 @@ $url_status = "https://sakura01.prosper2.org/status/status.json";
 $status = invoke-restmethod -uri $url_status -method get ;
 
 # Slack Status
-if( $status.slack -eq 'True' ){
+if( $status.slack -ne 'True' ){
   $service = "Slack";
   $title = $service + " Outage Report";
   $msg  = "There is an outage in "+$service ;
@@ -56,7 +56,7 @@ if( $status.slack -eq 'True' ){
 
 
 # Azure DevOps Status
-if( $status.AzureDevOps -eq 'True' ){
+if( $status.AzureDevOps -ne 'True' ){
   $service = "Azure DevOps";
   $title = $service + " Outage Report";
   $msg  = "There is an outage in "+$service ;
